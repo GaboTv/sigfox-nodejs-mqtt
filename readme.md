@@ -3,10 +3,13 @@
 ## Sigfox MQTT Node.js Tutorials
 
 From <http://mqtt.org/>  :  
-*MQTT stands for MQ Telemetry Transport. It is a publish/subscribe, extremely simple and lightweight messaging protocol, designed for constrained devices and low-bandwidth, high-latency or unreliable networks. The design principles are to minimise network bandwidth and device resource requirements whilst also attempting to ensure reliability and some degree of assurance of delivery. These principles also turn out to make the protocol ideal of the emerging “machine-to-machine” (M2M) or “Internet of Things” world of connected devices, and for mobile applications where bandwidth and battery power are at a premium.*
 
-In nutshell, MQTT works with publishers, subscribers and topics. Anyone can publish to any topic hierarchy such as *device/23ED5E/temperature* and anyone can subscribe to any topics.  
+MQTT works with publishers, subscribers and topics. Anyone can publish to any topic hierarchy such as *device/23ED5E/temperature* and anyone can subscribe to any topics.  
 MQTT needs brokers to interface between publishers and subscribers, you can build a broker locally with products such as <http://www.hivemq.com> or you can use for ex. IBM Watson IOT platform as your MQTT broker.
+
+*MQTT stands for MQ Telemetry Transport. It is a publish/subscribe, extremely simple and lightweight messaging protocol, designed for constrained devices and low-bandwidth, high-latency or unreliable networks. The design principles are to minimise network bandwidth and device resource requirements whilst also attempting to ensure reliability and some degree of assurance of delivery.*
+
+*These principles also turn out to make the protocol ideal of the emerging “machine-to-machine” (M2M) or “Internet of Things” world of connected devices, and for mobile applications where bandwidth and battery power are at a premium.*
 
 ### Purpose
 We want to create a node.js server that will be called by Sigfox callbacks. This server will take the payload sent by the IOT device and publish it to the MQTT broker. It's a very simple middleware between Sigfox and MQTT.
