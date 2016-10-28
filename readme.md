@@ -1,4 +1,6 @@
-# 0. What is MQTT ?
+<p align="center"><img src ="http://www.sigfox.com/themes/custom/sigfox/images/logo-2016.svg" width="300"></p>
+
+## Sigfox MQTT Node.js Tutorials
 
 From <http://mqtt.org/>  :  
 *MQTT stands for MQ Telemetry Transport. It is a publish/subscribe, extremely simple and lightweight messaging protocol, designed for constrained devices and low-bandwidth, high-latency or unreliable networks. The design principles are to minimise network bandwidth and device resource requirements whilst also attempting to ensure reliability and some degree of assurance of delivery. These principles also turn out to make the protocol ideal of the emerging “machine-to-machine” (M2M) or “Internet of Things” world of connected devices, and for mobile applications where bandwidth and battery power are at a premium.*
@@ -6,7 +8,7 @@ From <http://mqtt.org/>  :
 In nutshell, MQTT works with publishers, subscribers and topics. Anyone can publish to any topic hierarchy such as *device/23ED5E/temperature* and anyone can subscribe to any topics.  
 MQTT needs brokers to interface between publishers and subscribers, you can build a broker locally with products such as <http://www.hivemq.com> or you can use for ex. IBM Watson IOT platform as your MQTT broker.
 
-**What are we trying to do ?**
+### Purpose
 We want to create a node.js server that will be called by Sigfox callbacks. This server will take the payload sent by the IOT device and publish it to the MQTT broker. It's a very simple middleware between Sigfox and MQTT.
 
 In Sigfox backend the device is part of a deviceType container that will define the callback behaviour, eg which server is called when a message hits the backend. Our middleware will take inbound data, check it, eventually reformat it and publish. We assume that this middleware will take only one deviceType, therefore only one callback. Multiple callbacks for multiple deviceTypes will be handled by multiple independant node.js servers.
@@ -17,7 +19,7 @@ Some links :
 * IBM DeveloperWorks article : <https://www.ibm.com/developerworks/cloud/library/cl-mqtt-bluemix-iot-node-red-app/>
 
 
-# 1. Setup the node application
+### Setup
 
 First install [locatunnel](https://localtunnel.github.io/www/) and run it :
 
@@ -46,7 +48,7 @@ nodemon app.js
 Now if you go to <http://localhost:3000> or <http://iqybgxdslx.localtunnel.me> you should see :
 
 
-#2. Try the first POST route
+### Test the POST route
 
 Good! Let’s modify this code to create something useful.
 
@@ -118,7 +120,7 @@ info: POST{"time":"{time}","device":"{device}","duplicate":"{duplicate}","snr":"
 
 ```
 
-# 3. Add some authentication
+### Authentication
 
 The Middleware will be used by a single server (the Sigfox server) and this should not change.
 Therefore we can use basic-auth-connect :
@@ -174,7 +176,7 @@ router.post("/data", auth.basicAuthentication, function(req, res, next) {
 });
 ```
 
-This is **VERY** basic, but if we are using https between Sigfox servers and our Middleware the authorization token will not be disclosed, so no risk for interception.
+This is **VERY** basic, but if we are using https between Sigfox servers and our middleware the authorization token will not be disclosed, so no risk for interception.
 
 Now to test this, go to Postman, choose basic Auth, fill in your login and password , click on refresh Headers and you should have a new header line with the right token.
 
@@ -190,7 +192,7 @@ The header is
 Authorization : Basic dGVzdFVzZXIrdGVzdFBhc3MK
 ```
 
-# 4. Connect to Sigfox Callback
+### Sigfox Callbacks
 
 Go to <https://backend.sigfox.com/>  
 Go to Device type and click on the type’s name,   
@@ -231,7 +233,7 @@ info: POST{"time":"1476826723","device":"17AA7B","duplicate":"false","snr":"11.4
 
 In order to continue the testing without worrying too much about my dev board, I will copy/paste the body content into POSTMAN so that I can test easily.
 
-# 5. Content validation
+### Content Validation
 
 We want to make sure that the info passed in the POST are sound and valid.
 Let’s install express-validator :
@@ -283,7 +285,7 @@ router.post('/data', auth.basicAuthentication, function(req, res, next) {
 
 You now have a working server that will accept incoming data from Sigfox callbacks. You can start from there and do anything useful for you (for ex : store the data received in a db). We will continue with another application, MQTT client.
 
-# 6. MQTT client
+### MQTT Client
 
 Let’s install our MQTT client :
 
@@ -352,4 +354,4 @@ router.post('/data', auth.basicAuthentication, function(req, res, next) {
 ```
 If you go to POSTMAN and hit the send button again, then go quickly to <http://www.mqtt-dashboard.com/> you should see your message in the **Recently used topic** on the right handside.
 
-Good : we can publish our message to a MQTT Broker.
+You can publish your message to a MQTT Broker.
